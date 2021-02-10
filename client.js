@@ -14,7 +14,6 @@ const redis = {
 
     },
     async getKeys(key) {
-        key = this.setPrefix(key);
         try {
             return await this.client.keys(key);
         } catch (error) {
@@ -44,7 +43,6 @@ const redis = {
     },
 
     deleter(key) {
-        key = this.setPrefix(key);
         return this.client.del(key)
             .then(result => true)
             .catch(e => console.error('<<RDS-ERR>>: ', error));

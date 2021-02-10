@@ -67,7 +67,7 @@ class Locker {
     }
 
 
-    tryToLock = (lockName, resolve) => {
+    tryToLock(lockName, resolve) {
         let interval = setInterval(() => {
             redis.client.SETNX(lockName, 'foo', (err, done) => {
                 if(done) {
