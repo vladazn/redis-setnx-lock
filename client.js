@@ -1,7 +1,7 @@
 const asyncRedis = require("async-redis");
 
 const redis = {
-    expirationTime: 12 * 60 * 60,
+    expirationTime: 2 * 60 * 60,
     connect(configs) {
         if (configs.expirationTime){
             this.expirationTime = configs.expirationTime
@@ -9,7 +9,7 @@ const redis = {
         this.client = asyncRedis.createClient(configs || {});
         return new Promise((res, rej) => {
             this.client.on("ready", () => {
-                res()
+                res(this.client)
             });
             this.client.on("error", (e) => {
                 rej()
