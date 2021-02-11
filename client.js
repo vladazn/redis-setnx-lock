@@ -1,7 +1,11 @@
 const asyncRedis = require("async-redis");
 
 const redis = {
+    expirationTime: 12 * 60 * 60,
     connect(configs) {
+        if (configs.expirationTime){
+            this.expirationTime = configs.expirationTime
+        }
         this.client = asyncRedis.createClient(configs || {});
         return new Promise((res, rej) => {
             this.client.on("ready", () => {
@@ -24,7 +28,7 @@ const redis = {
 
     async setter(key, value) {
         try {
-            await this.client.SETEX(key, 2 * 60 * 60, JSON.stringify(value));
+            await this.client.SETEX(key, this.expirationTime, JSON.stringify(value));
             return true;
         } catch (error) {
             console.error('<<RDS-ERR>>: ', error);
